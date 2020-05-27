@@ -8,8 +8,8 @@ RUN yum install -y java-11-openjdk-devel curl git skopeo which zip unzip && yum 
 
 ARG user=jenkins
 ARG group=jenkins
-ARG uid=1000
-ARG gid=1000
+ARG uid=1001
+ARG gid=0
 ARG http_port=8080
 ARG agent_port=50000
 ARG JENKINS_HOME=/var/jenkins_home
@@ -38,6 +38,7 @@ RUN curl -fsSL https://archive.apache.org/dist/maven/maven-3/$MAVEN_VERSION/bina
 # ensure you use the same uid
 RUN mkdir -p $JENKINS_HOME \
   && chown -R ${uid}:${gid} $JENKINS_HOME \
+  && chmod -R g+rw $JENKINS_HOME \
   && groupadd -g ${gid} ${group} \
   && useradd -d "$JENKINS_HOME" -u ${uid} -g ${gid} -m -s /bin/bash ${user}
 
