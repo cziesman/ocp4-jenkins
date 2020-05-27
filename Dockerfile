@@ -39,7 +39,6 @@ RUN curl -fsSL https://archive.apache.org/dist/maven/maven-3/$MAVEN_VERSION/bina
 RUN mkdir -p $JENKINS_HOME \
   && chown -R ${uid}:${gid} $JENKINS_HOME \
   && chmod -R g+rw $JENKINS_HOME \
-  && groupadd -g ${gid} ${group} \
   && useradd -d "$JENKINS_HOME" -u ${uid} -g ${gid} -m -s /bin/bash ${user}
 
 # Jenkins home directory is a volume, so configuration and build history
