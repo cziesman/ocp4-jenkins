@@ -24,8 +24,7 @@ ENV JENKINS_VERSION="2.222.3" \
     JENKINS_INCREMENTALS_REPO_MIRROR=https://repo.jenkins-ci.org/incrementals \
     MAVEN_VERSION=3.6.3 \
     M2_HOME=/usr/share/maven \
-    maven.home=$M2_HOME \
-    M2=$M2_HOME/bin \
+    M2=${M2_HOME}/bin \
     PATH=$M2:$PATH \
     JAVA_OPTS=""-Djenkins.install.runSetupWizard=false"
 
