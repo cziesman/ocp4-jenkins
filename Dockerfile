@@ -13,6 +13,8 @@ ARG gid=0
 ARG http_port=8080
 ARG agent_port=50000
 ARG JENKINS_HOME=/var/jenkins_home
+ARG M2_HOME=/usr/share/maven
+ARG MAVEN_VERSION=3.6.3
 
 ENV JENKINS_VERSION="2.222.3" \
     JENKINS_USER=admin \
@@ -22,11 +24,12 @@ ENV JENKINS_VERSION="2.222.3" \
     JENKINS_UC=https://updates.jenkins.io \
     JENKINS_UC_EXPERIMENTAL=https://updates.jenkins.io/experimental \
     JENKINS_INCREMENTALS_REPO_MIRROR=https://repo.jenkins-ci.org/incrementals \
-    MAVEN_VERSION=3.6.3 \
-    M2_HOME=/usr/share/maven \
-    M2=${M2_HOME}/bin \
-    PATH=$M2:$PATH \
+    MAVEN_VERSION=$MAVEN_VERSION \
+    M2_HOME=$M2_HOME \
+    M2=$M2_HOME/bin \
     JAVA_OPTS=""-Djenkins.install.runSetupWizard=false"
+
+ENV PATH=$M2:$PATH
 
 RUN curl -fsSL https://archive.apache.org/dist/maven/maven-3/$MAVEN_VERSION/binaries/apache-maven-$MAVEN_VERSION-bin.tar.gz | tar xzf - -C /usr/share \
   && mv /usr/share/apache-maven-$MAVEN_VERSION /usr/share/maven \
