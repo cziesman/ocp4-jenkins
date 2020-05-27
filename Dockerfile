@@ -1,5 +1,7 @@
 FROM centos:latest
 
+MAINTAINER Craig Ziesman <cziesman@redhat.com>
+
 USER root
 
 RUN yum install -y java-11-openjdk-devel curl git skopeo which zip unzip && yum clean all
