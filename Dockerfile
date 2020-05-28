@@ -16,7 +16,7 @@ ARG JENKINS_HOME=/var/jenkins_home
 ARG M2_HOME=/usr/share/maven
 ARG MAVEN_VERSION=3.6.3
 
-ENV JENKINS_VERSION="2.222.3" \
+ENV JENKINS_VERSION="2.222.4" \
     JENKINS_USER=admin \
     JENKINS_PASS=admin \
     JENKINS_HOME=$JENKINS_HOME \
@@ -61,7 +61,7 @@ RUN gpg --batch --keyserver hkp://p80.pool.sks-keyservers.net:80 --recv-keys 595
 RUN chmod +x /sbin/tini
 
 # jenkins.war checksum, download will be validated using it
-ARG JENKINS_SHA=1529d642e29e74f65369ff5611935e9361065d9e8f65344a64912c5660cc0781
+ARG JENKINS_SHA=6c95721b90272949ed8802cab8a84d7429306f72b180c5babc33f5b073e1c47c
 
 # Can be used to customize where jenkins.war get downloaded from
 ARG JENKINS_URL=https://repo.jenkins-ci.org/public/org/jenkins-ci/main/jenkins-war/${JENKINS_VERSION}/jenkins-war-${JENKINS_VERSION}.war
@@ -88,7 +88,9 @@ COPY jenkins.sh /usr/local/bin/jenkins.sh
 
 COPY install-plugins.sh /usr/local/bin/install-plugins.sh
 
-COPY plugins.txt /usr/share/jenkins/plugins.txt
-RUN /usr/local/bin/install-plugins.sh < /usr/share/jenkins/plugins.txt
+COPY plugins.txt /usr/share/jenkins/ref/plugins.txt
+RUN /usr/local/bin/install-plugins.sh < /usr/share/jenkins/ref/plugins.txt
+
+COPY config.xml /usr/share/jenkins/ref/config.xml
 
 ENTRYPOINT ["/sbin/tini", "--", "/usr/local/bin/jenkins.sh"]
