@@ -27,6 +27,7 @@ ENV JENKINS_VERSION="2.222.4" \
     MAVEN_VERSION=$MAVEN_VERSION \
     M2_HOME=$M2_HOME \
     M2=$M2_HOME/bin \
+    HOME=$JENKINS_HOME \
     JAVA_OPTS=""-Djenkins.install.runSetupWizard=false"
 
 ENV PATH=$M2:$PATH
@@ -34,6 +35,9 @@ ENV PATH=$M2:$PATH
 RUN curl -fsSL https://archive.apache.org/dist/maven/maven-3/$MAVEN_VERSION/binaries/apache-maven-$MAVEN_VERSION-bin.tar.gz | tar xzf - -C /usr/share \
   && mv /usr/share/apache-maven-$MAVEN_VERSION /usr/share/maven \
   && ln -s /usr/share/maven/bin/mvn /usr/bin/mvn
+
+RUN mkdir -p $JENKINS_HOME/.m2/repository
+RUN echo -e "<settings><localrepository>$JENKINS_HOME/.m2/repository</localrepository>\n</settings>\n" > $JENKINS_HOME/settings.xml
 
 # Jenkins is run with user `jenkins`, uid = 1000
 # If you bind mount a volume from the host or a data container,
