@@ -20,6 +20,8 @@ ENV  JAVA_OPTS="-Djenkins.install.runSetupWizard=false"
 
 RUN echo JENKINS_HOME=$JENKINS_HOME
 
+RUN chown -R jenkins "$JENKINS_HOME" ${REF}
+
 USER jenkins
 
 COPY plugins.txt ${REF}/plugins.txt
