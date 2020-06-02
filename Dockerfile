@@ -16,15 +16,15 @@ FROM jenkins/jenkins:jdk11
 
 USER root
 
-ENV  JAVA_OPTS="-Djenkins.install.runSetupWizard=false"
+ENV JAVA_OPTS="-Djenkins.install.runSetupWizard=false"
 
 RUN echo JENKINS_HOME=$JENKINS_HOME
 
-RUN chown -R jenkins "$JENKINS_HOME" ${REF}
-
-USER jenkins
+USER 1000
 
 COPY plugins.txt ${REF}/plugins.txt
 RUN /usr/local/bin/install-plugins.sh < ${REF}/plugins.txt
+
+RUN chown -R 1000:1000 "$JENKINS_HOME" ${REF}
 
 WORKDIR $JENKINS_HOME
