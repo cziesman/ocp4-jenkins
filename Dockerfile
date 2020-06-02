@@ -26,6 +26,8 @@ RUN mkdir -p $HOME && \
     chown -R 1000:0 $HOME && \
     chmod -R g+rw $HOME
 
+#VOLUME $HOME
+
 USER 1000
 
-#WORKDIR $HOME
+WORKDIR $HOME
