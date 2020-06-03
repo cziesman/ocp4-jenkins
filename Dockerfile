@@ -10,8 +10,6 @@ FROM maven:3.6.3-openjdk-11
 
 USER root
 
-RUN echo '$MAVEN_HOME='$MAVEN_HOME
-
 FROM jenkins/jenkins:jdk11
 
 USER root
@@ -27,11 +25,12 @@ RUN /usr/local/bin/install-plugins.sh < ${REF}/plugins.txt
 #    chmod -R go+rw $HOME && \
 #    usermod -d $HOME -u 1000 -g 0 -m -s /bin/bash jenkins
 
-RUN chgrp -R 0 $HOME && \
-    chmod -R g=u $HOME
+#RUN chgrp -R 0 $HOME && \
+#    chmod -R g=u $HOME
 
+RUN chown -R 1000:0 $HOME && \
+    find ${HOME} -type d -exec chmod g+ws {} \;
 VOLUME $HOME
 
+WORKDIR $HOME
 USER 1000
-
-#WORKDIR $HOME
