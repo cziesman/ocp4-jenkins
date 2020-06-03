@@ -24,11 +24,14 @@ RUN /usr/local/bin/install-plugins.sh < ${REF}/plugins.txt
 
 #RUN mkdir -p $HOME && \
 #    chown -R 1000:0 $HOME && \
-#    chmod -R g+rw $HOME && \
+#    chmod -R go+rw $HOME && \
 #    usermod -d $HOME -u 1000 -g 0 -m -s /bin/bash jenkins
 
-#VOLUME $HOME
+RUN chgrp -R 0 $HOME && \
+    chmod -R g=u $HOME
 
-#USER 1000
+VOLUME $HOME
+
+USER 1000
 
 #WORKDIR $HOME
