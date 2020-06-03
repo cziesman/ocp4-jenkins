@@ -22,13 +22,13 @@ ENV  JAVA_OPTS="-Djenkins.install.runSetupWizard=false" \
 COPY plugins.txt ${REF}/plugins.txt
 RUN /usr/local/bin/install-plugins.sh < ${REF}/plugins.txt
 
-RUN mkdir -p $HOME && \
-    chown -R 1000:0 $HOME && \
-    chmod -R g+rw $HOME && \
-    usermod -d $HOME -u 1000 -g 0 -m -s /bin/bash jenkins
+#RUN mkdir -p $HOME && \
+#    chown -R 1000:0 $HOME && \
+#    chmod -R g+rw $HOME && \
+#    usermod -d $HOME -u 1000 -g 0 -m -s /bin/bash jenkins
 
-VOLUME $HOME
+#VOLUME $HOME
 
-USER 1000
+#USER 1000
 
 #WORKDIR $HOME
