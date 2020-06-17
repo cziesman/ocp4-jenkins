@@ -15,6 +15,7 @@ ARG agent_port=50000
 ARG JENKINS_HOME=/var/jenkins_home
 ARG M2_HOME=/usr/share/maven
 ARG MAVEN_VERSION=3.6.3
+ARG OC_RELEASE="4.4.0-202005281159.git.1.2775aaa.el7/linux-aarch64"
 
 ENV JENKINS_VERSION="2.222.4" \
     JENKINS_USER=admin \
@@ -28,13 +29,17 @@ ENV JENKINS_VERSION="2.222.4" \
     M2_HOME=$M2_HOME \
     M2=$M2_HOME/bin \
     HOME=$JENKINS_HOME \
-    JAVA_OPTS=""-Djenkins.install.runSetupWizard=false"
+    JAVA_OPTS=""-Djenkins.install.runSetupWizard=false" \
+    OC_RELEASE=$OC_RELEASE
 
 ENV PATH=$M2:$PATH
 
-RUN curl -fsSL https://archive.apache.org/dist/maven/maven-3/$MAVEN_VERSION/binaries/apache-maven-$MAVEN_VERSION-bin.tar.gz | tar xzf - -C /usr/share \
-  && mv /usr/share/apache-maven-$MAVEN_VERSION /usr/share/maven \
-  && ln -s /usr/share/maven/bin/mvn /usr/bin/mvn
+RUN curl -fsSL https://mirror.openshift.com/pub/openshift-v4/clients/oc/$OC_RELEASE/oc.tar.gz | tar xzf - -C /usr/share && \
+    ln -s /usr/share/oc /usr/bin/oc
+
+RUN curl -fsSL https://archive.apache.org/dist/maven/maven-3/$MAVEN_VERSION/binaries/apache-maven-$MAVEN_VERSION-bin.tar.gz | tar xzf - -C /usr/share && \
+    mv /usr/share/apache-maven-$MAVEN_VERSION /usr/share/maven && \
+    ln -s /usr/share/maven/bin/mvn /usr/bin/mvn
 
 RUN mkdir -p $JENKINS_HOME/.m2/repository
 RUN echo -e "<settings><localrepository>$JENKINS_HOME/.m2/repository</localrepository>\n</settings>\n" > $JENKINS_HOME/settings.xml
@@ -60,8 +65,8 @@ RUN mkdir -p /usr/share/jenkins/ref/init.groovy.d
 ENV TINI_VERSION v0.19.0
 ADD https://github.com/krallin/tini/releases/download/${TINI_VERSION}/tini /sbin/tini
 ADD https://github.com/krallin/tini/releases/download/${TINI_VERSION}/tini.asc /sbin/tini.asc
-RUN gpg --batch --keyserver hkp://p80.pool.sks-keyservers.net:80 --recv-keys 595E85A6B1B4779EA4DAAEC70B588DFF0527A9B7 \
- && gpg --batch --verify /sbin/tini.asc /sbin/tini
+RUN gpg --batch --keyserver hkp://p80.pool.sks-keyservers.net:80 --recv-keys 595E85A6B1B4779EA4DAAEC70B588DFF0527A9B7 && \
+    gpg --batch --verify /sbin/tini.asc /sbin/tini
 RUN chmod +x /sbin/tini
 
 # jenkins.war checksum, download will be validated using it
@@ -72,8 +77,8 @@ ARG JENKINS_URL=https://repo.jenkins-ci.org/public/org/jenkins-ci/main/jenkins-w
 
 # could use ADD but this one does not check Last-Modified header neither does it allow to control checksum
 # see https://github.com/docker/docker/issues/8331
-RUN curl -fsSL ${JENKINS_URL} -o /usr/share/jenkins/jenkins.war \
-  && echo "${JENKINS_SHA}  /usr/share/jenkins/jenkins.war" | sha256sum -c -
+RUN curl -fsSL ${JENKINS_URL} -o /usr/share/jenkins/jenkins.war && \
+    echo "${JENKINS_SHA}  /usr/share/jenkins/jenkins.war" | sha256sum -c -
 
 RUN chown -R ${user} "$JENKINS_HOME" /usr/share/jenkins/ref
 
