@@ -29,8 +29,8 @@ ENV JENKINS_VERSION="2.222.4" \
     M2_HOME=$M2_HOME \
     M2=$M2_HOME/bin \
     HOME=$JENKINS_HOME \
-    JAVA_OPTS=""-Djenkins.install.runSetupWizard=false" \
-    OC_CLIENT_RELEASE=$OC_CLIENT_RELEASE
+    OC_CLIENT_RELEASE=$OC_CLIENT_RELEASE \
+    JAVA_OPTS="-Djenkins.install.runSetupWizard=false"
 
 ENV PATH=$M2:$PATH
 
