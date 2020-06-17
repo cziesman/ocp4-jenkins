@@ -15,7 +15,7 @@ ARG agent_port=50000
 ARG JENKINS_HOME=/var/jenkins_home
 ARG M2_HOME=/usr/share/maven
 ARG MAVEN_VERSION=3.6.3
-ARG OC_RELEASE="4.4.0-202005281159.git.1.2775aaa.el7/linux-aarch64"
+ARG OC_CLIENT_RELEASE="4.4.0-202005281159.git.1.2775aaa.el7/linux-aarch64"
 
 ENV JENKINS_VERSION="2.222.4" \
     JENKINS_USER=admin \
@@ -30,11 +30,11 @@ ENV JENKINS_VERSION="2.222.4" \
     M2=$M2_HOME/bin \
     HOME=$JENKINS_HOME \
     JAVA_OPTS=""-Djenkins.install.runSetupWizard=false" \
-    OC_RELEASE=$OC_RELEASE
+    OC_CLIENT_RELEASE=$OC_CLIENT_RELEASE
 
 ENV PATH=$M2:$PATH
 
-RUN curl -fsSL https://mirror.openshift.com/pub/openshift-v4/clients/oc/$OC_RELEASE/oc.tar.gz | tar xzf - -C /usr/share && \
+RUN curl -fsSL https://mirror.openshift.com/pub/openshift-v4/clients/oc/$OC_CLIENT_RELEASE/oc.tar.gz | tar xzf - -C /usr/share && \
     ln -s /usr/share/oc /usr/bin/oc
 
 RUN curl -fsSL https://archive.apache.org/dist/maven/maven-3/$MAVEN_VERSION/binaries/apache-maven-$MAVEN_VERSION-bin.tar.gz | tar xzf - -C /usr/share && \
