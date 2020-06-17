@@ -35,6 +35,7 @@ ENV JENKINS_VERSION="2.222.4" \
 ENV PATH=$M2:$PATH
 
 RUN curl -fsSL https://mirror.openshift.com/pub/openshift-v4/clients/oc/$OC_CLIENT_RELEASE/oc.tar.gz | tar xzf - -C /usr/share && \
+    chmod +x /usr/share/oc && \
     ln -s /usr/share/oc /usr/bin/oc
 
 RUN curl -fsSL https://archive.apache.org/dist/maven/maven-3/$MAVEN_VERSION/binaries/apache-maven-$MAVEN_VERSION-bin.tar.gz | tar xzf - -C /usr/share && \
