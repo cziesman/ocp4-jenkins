@@ -4,7 +4,7 @@ MAINTAINER Craig Ziesman <cziesman@redhat.com>
 
 USER root
 
-RUN yum install -y java-11-openjdk-devel curl git skopeo which zip unzip && yum clean all
+RUN yum install -y java-11-openjdk-devel curl git skopeo podman which zip unzip && yum clean all
 
 ARG user=jenkins
 ARG group=jenkins
